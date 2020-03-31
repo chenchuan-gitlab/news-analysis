@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.MaterialInfoMapper">
+    <!--通过批次获取记录-->
+    <select id="getRecordByBatch" parameterType="String" resultType="MaterialInfo">
+        SELECT * FROM tb_material_information WHERE purchase_batch=#{purchase_batch}
+    </select>
+
+    <!--创建新纪录-->
+    <insert id="createRecord" parameterType="MaterialInfo">
+        INSERT INTO tb_material_information VALUES (#{material_batch},#{cow_batch},#{milk_yield},#{date})
+    </insert>
+
+    <!--通过条件查询记录-->
+    <select id="getRecordList" parameterType="Map" resultType="MaterialInfo">
+        SELECT * FROM tb_material_information
+        <where>
+            <if test="material_batch!=null">
+                material_batch=#{material_batch}
+            </if>
+            <if test="cow_batch!=null">
+                AND cow_batch=#{cow_batch}
+            </if>
+            <if test="start_time!=null">
+                <if test="end_time!=null">
+                    AND str_to_date(date,'%Y-%m-%d') BETWEEN str_to_date(#{start_time},'%Y-%m-%d') AND str_to_date(#{end_time},'%Y-%m-%d')
+                </if>
+                AND str_to_date(date,'%Y-%m-%d')>=str_to_date(#{start_time},'%Y-%m-%d')
+            </if>
+        </where>
+    </select>
+
+</mapper>

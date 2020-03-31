@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>生产信息管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <style>
+        .layui-card-header span {
+            float: right
+        }
+    </style>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script src="./js/myjs/production.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="production_batch" id="production_batch" placeholder="生产批次"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="product_type" id="product_type" placeholder="产品种类"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input class="layui-input" autocomplete="off" placeholder="产品名称" name="product_name"
+                                   id="product_name">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <div class="layui-inline layui-show-xs-block">
+                            <input class="layui-input" autocomplete="off" placeholder="开始时间" name="start_time"
+                                   id="start_time">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input class="layui-input" autocomplete="off" placeholder="截止时间" name="end_time"
+                                   id="end_time">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="operator" id="operator" placeholder="操作人员"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="sreach" type="button"
+                                    onclick="getRecordList(1)"><i
+                                    class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加记录','./production-add.html')"><i
+                            class="layui-icon"></i>添加
+                    </button>
+                    <button class="layui-btn" onclick="xadmin.open('辅料投放记录','./excipientsPut-list.html',1000,700)"><i
+                            class="layui-icon">&#xe642;</i>辅料投放记录
+                    </button>
+                    <span style="line-height:40px" id="recordSpan"></span>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>生产批次</th>
+                            <th>产品类型</th>
+                            <th>产品名称</th>
+                            <th>原料批次</th>
+                            <th>投料量</th>
+                            <th>计划产量</th>
+                            <th>生产日期</th>
+                            <th>操作人员</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div id="page" align="center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        getRecordList(1);
+    });
+
+    layui.use(['laydate', 'form'], function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start_time' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end_time' //指定元素
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.CowVaccinationMapper">
+    <select id="getRecordByID" parameterType="java.lang.Integer" resultType="CowVaccination">
+        SELECT * FROM tb_cow_vaccination WHERE id = #{id}
+    </select>
+
+    <insert id="createRecord" parameterType="CowVaccination">
+        INSERT INTO tb_cow_vaccination VALUES (0,#{cow_batch},#{vaccine_name},#{vaccination_date},#{vaccination_number},#{total_cow});
+    </insert>
+
+    <select id="getRecordList" parameterType="Map" resultType="CowVaccination">
+        SELECT * FROM tb_cow_vaccination
+        <where>
+            <if test="cow_batch!=null">
+                cow_batch=#{cow_batch}
+            </if>
+            <if test="start_time!=null">
+                <if test="end_time!=null">
+                    AND str_to_date(vaccination_date,'%Y-%m-%d') BETWEEN str_to_date(#{start_time},'%Y-%m-%d') AND str_to_date(#{end_time},'%Y-%m-%d')
+                </if>
+                AND AND str_to_date(vaccination_date,'%Y-%m-%d') >= str_to_date(#{start_time},'%Y-%m-%d')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateRecord" parameterType="CowVaccination">
+        UPDATE tb_cow_vaccination SET cow_batch=#{cow_batch},vaccine_name=#{vaccine_name},vaccination_date=#{vaccination_date},
+        vaccination_number=#{vaccination_number},total_cow=#{total_cow} WHERE id=#{id}
+    </update>
+</mapper>

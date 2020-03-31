@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加记录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <style>
+        .layui-table tbody tr:hover{
+            background-color: #f1f1f1;}
+        .layui-table tbody tr{background-color: #f1f1f1}
+    </style>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script src="./js/myjs/material.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-card-header">
+            <button class="layui-btn" onclick="addCondition()"><i class="layui-icon"></i>添加辅料</button>
+        </div>
+        <div class="layui-card-body ">
+            <table class="layui-table" lay-skin="nob">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+   function addCondition() {
+       if($("thead").children().length==0){
+           $("thead").append("<tr> <th>辅料名称</th> <th>总量</th> <th></th> </tr>");
+       }
+       var tableHtml = '<tr><td><div class="layui-input-inline"><input type="text" id="name" required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div></td> ' +
+            '<td><div class="layui-input-inline"><input type="text" id="weight" required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div></td> ' +
+            '<td><button class="layui-btn layui-btn-danger" onclick="delCondition(this)"><i class="layui-icon"></i>删除</button></td></tr>'
+       $("tbody").append(tableHtml);
+   }
+   function delCondition(obj) {
+       var tr=obj.parentNode.parentNode;
+       var tbody=tr.parentNode;
+       tbody.removeChild(tr);
+       if($("tbody").children().length==0){
+           $("thead").empty();
+       }
+   }
+</script>
+</body>
+</html>

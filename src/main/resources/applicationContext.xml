@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+    <!-- 配置dataSource -->
+    <context:property-placeholder location="classpath:datasource.properties"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${driverClass}"></property>
+        <property name="url" value="${url}"></property>
+        <property name="username" value="${user}"></property>
+        <property name="password" value="${password}"></property>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+
+    <!-- 配置sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:spring-mybatis.xml"></property>
+    </bean>
+
+    <!-- 配置接口代理 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="basePackage" value="com.news.analysis.dao"></property>
+    </bean>
+
+    <!--配置事务管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--启用注解管理事务-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设定默认编码 -->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 设定文件上传的最大值5MB，5*1024*1024 -->
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
+
+    <!-- 扫描service包，启用注解 -->
+    <context:annotation-config></context:annotation-config>
+    <context:component-scan base-package="com.news.analysis.service"></context:component-scan>
+    <context:component-scan base-package="com.news.analysis.pojo"></context:component-scan>
+</beans>

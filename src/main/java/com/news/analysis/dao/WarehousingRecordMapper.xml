@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.WarehousingRecordMapper">
+    <!--通过批次获取记录-->
+    <select id="getWarehousingRecordByBatch" parameterType="String" resultType="WarehousingRecord">
+        SELECT * FROM tb_warehousing_record WHERE warehousing_batch=#{warehousing_batch}
+    </select>
+
+    <!--新建记录-->
+    <insert id="createWarehousingRecord" parameterType="WarehousingRecord">
+        INSERT INTO tb_warehousing_record VALUES (#{warehousing_batch},#{warehousing_date},#{warehouse_number},#{production_batch},#{product_type},#{product_name},#{quantity},#{operator})
+    </insert>
+
+    <!--通过查询条件获取记录-->
+    <select id="getWarehousingRecordList" resultType="WarehousingRecord">
+        SELECT * FROM tb_warehousing_record
+        <where>
+            <if test="warehousing_batch!=null">
+                warehousing_batch=#{warehousing_batch}
+            </if>
+            <if test="start_time!=null">
+                <if test="end_time!=null">
+                    AND str_to_date(warehousing_date,'%Y-%m-%d %H:%i:%s') BETWEEN str_to_date(#{start_time},'%Y-%m-%d %H:%i:%s') AND str_to_date(#{end_time},'%Y-%m-%d %H:%i:%s')
+                </if>
+                AND str_to_date(warehousing_date,'%Y-%m-%d %H:%i:%s')>=str_to_date(#{start_time},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="warehouse_number!=null">
+                AND warehouse_number=#{warehouse_number}
+            </if>
+            <if test="production_batch!=null">
+                AND production_batch=#{production_batch}
+            </if>
+            <if test="product_type!=null">
+                AND product_type=#{product_type}
+            </if>
+            <if test="product_name!=null">
+                AND product_name=#{product_name}
+            </if>
+            <if test="operator!=null">
+                AND operator=#{operator}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

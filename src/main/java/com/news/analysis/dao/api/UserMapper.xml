@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.api.UserMapper">
+    <!--保存用户-->
+    <insert id="saveUser">
+        INSERT INTO user(USER_NAME,PASSWORD,TIME)
+        VALUES(#{userName},#{password},#{time})
+    </insert>
+    <!--获取用户信息-->
+    <select id="getUserInfo" resultType="java.util.Map">
+        SELECT USER_NAME AS userName,PASSWORD AS password
+        FROM user
+        WHERE USER_NAME = #{userName}
+    </select>
+
+</mapper>

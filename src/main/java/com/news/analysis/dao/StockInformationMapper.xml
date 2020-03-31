@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.StockInformationMapper">
+    <!--通过id获取单个记录-->
+    <select id="getInfoByID" parameterType="java.lang.Integer" resultType="StockInformation">
+        SELECT * FROM tb_stock_information WHERE record_id=#{record_id}
+    </select>
+
+    <!--新建记录-->
+    <insert id="createStockInfo" parameterType="StockInformation">
+        INSERT INTO tb_stock_information(warehouse_number,production_batch,product_type,product_name,inventory_quantity,product_date,warehousing_date)
+        VALUES (#{warehouse_number},#{production_batch},#{product_type},#{product_name},#{inventory_quantity},#{product_date},#{warehousing_date})
+    </insert>
+
+    <!--通过查询条件获取记录-->
+    <select id="getInfoList" parameterType="Map" resultType="StockInformation">
+        SELECT * FROM tb_stock_information
+        <where>
+            <if test="production_batch!=null">
+                production_batch=#{production_batch}
+            </if>
+            <if test="product_type!=null">
+                AND product_type=#{product_type}
+            </if>
+            <if test="product_name">
+                AND product_name=#{product_name}
+            </if>
+        </where>
+    </select>
+
+    <!--修改库存数量-->
+    <update id="updateQuantity">
+        UPDATE tb_stock_information SET inventory_quantity=#{inventory_quantity} WHERE production_batch=#{production_batch}
+    </update>
+
+    <!--获取库存数量-->
+    <select id="getQuantity" parameterType="String" resultType="java.lang.Integer">
+        SELECT inventory_quantity FROM tb_stock_information WHERE production_batch=#{production_batch}
+    </select>
+</mapper>

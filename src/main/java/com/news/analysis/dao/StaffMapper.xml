@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.StaffMapper">
+    <!--创建一个角色-->
+    <insert id="createRole" parameterType="Role">
+        INSERT INTO tb_role VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.role_id},#{item.role_name},#{item.power_id})
+        </foreach>
+    </insert>
+
+    <!--获得角色列表-->
+    <select id="getRoleList" parameterType="String" resultType="Role">
+        SELECT * FROM tb_role
+        <where>
+            <if test="_parameter!=null">
+                role_id=#{role_id}
+            </if>
+        </where>
+    </select>
+
+    <!--删除一个角色-->
+    <delete id="deleteRole" parameterType="String">
+        DELETE FROM tb_role WHERE role_id = #{role_id}
+    </delete>
+
+    <!--新增一个员工-->
+    <insert id="createStaff" parameterType="Staff">
+        INSERT INTO tb_staff VALUES (#{staff_id},#{staff_pass},#{staff_name},#{sex},#{phone},#{role_id})
+    </insert>
+
+    <!--获取员工列表-->
+    <select id="getStaffList" parameterType="String">
+        SELECT * FROM tb_staff
+        <where>
+            <if test="staff_id!=null">
+                staff_id = #{staff_id}
+            </if>
+        </where>
+    </select>
+
+    <!--删除一个员工-->
+    <delete id="deleteStaff" parameterType="String">
+        DELETE FROM tb_staff WHERE staff_id=#{staff_id}
+    </delete>
+
+    <!--获取权限列表-->
+    <select id="getPowerList" resultType="Power">
+        SELECT * FROM tb_power
+    </select>
+
+    <!--获取角色权限列表-->
+    <select id="getRolePowerList" parameterType="List" resultType="Power">
+        SELECT * FROM tb_power WHERE power_id IN 
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--获取菜单列表-->
+    <select id="getMenuList" resultType="Menu">
+        SELECT * FROM tb_menu
+    </select>
+
+    <!--修改员工角色-->
+    <update id="updateStaffRole" parameterType="Map">
+        UPDATE tb_staff SET role_id = #{role_id} WHERE staff_id=#{staff_id}
+    </update>
+
+    <!--通过账号和密码获取信息-->
+    <select id="getStaffByIDAndPass" parameterType="String" resultType="Staff">
+        SELECT * FROM tb_staff WHERE staff_id=#{staff_id} AND staff_pass=#{staff_pass}
+    </select>
+
+</mapper>
