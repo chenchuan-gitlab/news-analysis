@@ -59,7 +59,7 @@ function showEcharts(t,h,time) {
 }
 
 function getMsg() {
-    setTimeout(getMsg,2000);
+    //setTimeout(getMsg,2000);
     $.ajax({
         url:"getTH/getTHMsg.action",
         type:"GET",

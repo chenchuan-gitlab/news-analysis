@@ -1,12 +1,9 @@
 package com.news.analysis.utils;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ResponseBuilder implements Serializable {
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long timestamp;
 
     private String message;
@@ -15,34 +12,33 @@ public class ResponseBuilder implements Serializable {
 
     private Object data;
 
-    public ResponseBuilder init(){
-        ResponseBuilder responseBuilder = new ResponseBuilder();
-        return responseBuilder;
+    public static ResponseBuilder custom(){
+        return new ResponseBuilder();
     }
 
     public  ResponseBuilder success(){
-        timestamp = new Date().getTime();
+        timestamp = System.currentTimeMillis();
         this.message = "success";
         this.code = 1;
         return this;
     }
 
     public ResponseBuilder success(String message,int code){
-        timestamp = new Date().getTime();
+        timestamp = System.currentTimeMillis();
         this.message = message;
         this.code = code;
         return this;
     }
 
     public ResponseBuilder faild(){
-        this.timestamp = new Date().getTime();
+        this.timestamp = System.currentTimeMillis();
         this.message = "error";
         this.code = 0;
         return this;
     }
 
     public ResponseBuilder faild(String message,int code){
-        timestamp = new Date().getTime();
+        timestamp = System.currentTimeMillis();
         this.message = message;
         this.code = code;
         return this;

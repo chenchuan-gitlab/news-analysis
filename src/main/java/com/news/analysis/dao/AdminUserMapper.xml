@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.news.analysis.dao.AdminUserMapper">
+    <insert id="insert" parameterType="java.util.Map">
+        INSERT INTO user(USER_NAME,PASSWORD,PHONE,AGE,SEX,TYPE,STATUS,TIME)
+        VALUES(#{userName},#{password},#{phone},#{age},#{sex},#{type},#{status},#{time})
+    </insert>
+
+    <select id="getUserList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT ID AS id,USER_NAME AS userName,IFNULL(PHONE,'') AS phone,IFNULL(AGE,'') AS age,IFNULL(SEX,'') AS sex,
+        (CASE TYPE WHEN 0 THEN '普通用户' ELSE '管理员' END) AS type,STATUS AS statusCode,
+        (CASE STATUS WHEN 0 THEN '禁用' ELSE '启用' END) AS status,DATE_FORMAT(TIME,'%Y-%m-%d %H:%i:%s') AS timeStr
+        FROM user
+        WHERE 1=1
+        <if test="useName != null and '' != userName">
+            <bind name="pattern" value="'%' + userName+ '%'"/>
+            AND USER_NAME LIKE pattern
+        </if>
+        <if test="startTime != null and '' != startTime">
+            AND TIME>=#{startTime}
+        </if>
+        <if test="endTime != null and '' != endTime">
+            <![CDATA[AND TIME<=#{endTime}]]>
+        </if>
+    </select>
+</mapper>

@@ -27,13 +27,13 @@ public class UserController extends ResponseBuilder {
     private UserService userService;
 
     @RequestMapping(value = "/regist.action",method = RequestMethod.POST)
-    public Object regist(String userName, String password) {
+    public Object regist(String userName, String password,String phone,String sex,int age) {
         try {
             Map userInfo = userService.getUserInfo(userName);
             if (userInfo != null && !userInfo.isEmpty()) {
                 Map resMap = new HashMap(1);
                 resMap.put("msg", "用户名不能重复");
-                return init().faild().data(resMap);
+                return ResponseBuilder.custom().faild().data(resMap);
             } else {
                 // md5 hash
                 String md5Pass = DigestUtils.md5Hex(password);
@@ -42,14 +42,17 @@ public class UserController extends ResponseBuilder {
                 Map user = new HashMap(3);
                 user.put("userName", userName);
                 user.put("password", securityPassword);
+                user.put("phone",phone);
+                user.put("sex",sex);
+                user.put("age",age);
                 user.put("time", DateUtil.getDate_yMdhms());
                 userService.saveUser(user);
-                return init().success();
+                return ResponseBuilder.custom().success();
             }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("注册异常");
-            return init().faild();
+            return ResponseBuilder.custom().faild();
         }
     }
 
@@ -62,15 +65,15 @@ public class UserController extends ResponseBuilder {
             Map resMap = new HashMap(2);
             if (flag) {
                 resMap.put("mes", "登录成功");
-                return init().success().data(resMap);
+                return ResponseBuilder.custom().success().data(resMap);
             } else {
                 resMap.put("mes", "登陆失败");
-                return init().faild().data(resMap);
+                return ResponseBuilder.custom().faild().data(resMap);
             }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("登录异常");
-            return init().faild("登陆异常", 0);
+            return ResponseBuilder.custom().faild("登陆异常", 0);
         }
     }
 

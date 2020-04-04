@@ -3,8 +3,8 @@
 <mapper namespace="com.news.analysis.dao.api.UserMapper">
     <!--保存用户-->
     <insert id="saveUser">
-        INSERT INTO user(USER_NAME,PASSWORD,TIME)
-        VALUES(#{userName},#{password},#{time})
+        INSERT INTO user(USER_NAME,PASSWORD,PHONE,AGE,SEX,TYPE,STATUS,TIME)
+        VALUES(#{userName},#{password},#{phone},#{age},#{sex},0,1,#{time})
     </insert>
     <!--获取用户信息-->
     <select id="getUserInfo" resultType="java.util.Map">

@@ -1,4 +1,4 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html;utf-8" pageEncoding="utf-8"%>
 <html class="x-admin-sm">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -48,9 +49,9 @@
             data: {"username": username, "password": password},
             success: function (data) {
                 if (data == "success") {
-                    location.href = 'index.html'
+                    location.href = 'index.jsp'
                 } else {
-                    location.href = 'login.html'
+                    layer.alert("用户名或密码错误!")
                 }
             }
         })

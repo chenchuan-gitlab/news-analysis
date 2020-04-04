@@ -1,8 +1,8 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html;utf-8" pageEncoding="utf-8" %>
 <html class="x-admin-sm">
 <head>
     <meta charset="UTF-8">
-    <title>溯源管理系统</title>
+    <title>新闻分析后台管理</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -28,7 +28,7 @@
 <!-- 顶部开始 -->
 <div class="container">
     <div class="logo">
-        <a href="./index.html">溯源管理系统</a></div>
+        <a href="./index.html">后台管理</a></div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
             <a href="javascript:;">admin</a>
@@ -51,27 +51,9 @@
     <div id="side-nav">
         <ul id="nav">
             <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="奶牛管理">&#xe6b8;</i>
-                    <cite>奶牛管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <!--<li>
-                        <a onclick="xadmin.add_tab('奶牛列表','excipients-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>奶牛列表</cite></a>
-                    </li>-->
-                    <li>
-                        <a onclick="xadmin.add_tab('投喂记录','cow-food-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>投喂记录</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('接种记录','cow-vaccination-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>接种记录</cite></a>
-                    </li>
-                </ul>
+                <a onclick="xadmin.add_tab('投喂记录','/user/user-list.jsp')">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>用户管理</cite></a>
             </li>
             <li>
                 <a href="javascript:;">
@@ -154,7 +136,7 @@
         </div>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='./welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe src='' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
             </div>
         </div>
         <div id="tab_show"></div>
