@@ -3,7 +3,7 @@ package com.news.analysis.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
- *
+ * IDUtil
  */
 public class IDUtil {
     public static String getID(){

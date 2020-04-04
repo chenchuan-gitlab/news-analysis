@@ -51,7 +51,7 @@
     <div id="side-nav">
         <ul id="nav">
             <li>
-                <a onclick="xadmin.add_tab('投喂记录','/user/user-list.jsp')">
+                <a onclick="xadmin.add_tab('用户管理','user/user-list.jsp')">
                     <i class="iconfont">&#xe6a7;</i>
                     <cite>用户管理</cite></a>
             </li>

@@ -3,6 +3,9 @@ package com.news.analysis.utils;
 
 import java.io.Serializable;
 
+/**
+ * ResponseBuilder
+ */
 public class ResponseBuilder implements Serializable {
     private Long timestamp;
 

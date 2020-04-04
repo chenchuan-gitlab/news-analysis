@@ -12,9 +12,9 @@
         (CASE STATUS WHEN 0 THEN '禁用' ELSE '启用' END) AS status,DATE_FORMAT(TIME,'%Y-%m-%d %H:%i:%s') AS timeStr
         FROM user
         WHERE 1=1
-        <if test="useName != null and '' != userName">
+        <if test="userName != null and '' != userName">
             <bind name="pattern" value="'%' + userName+ '%'"/>
-            AND USER_NAME LIKE pattern
+            AND USER_NAME LIKE #{pattern}
         </if>
         <if test="startTime != null and '' != startTime">
             AND TIME>=#{startTime}
@@ -23,4 +23,8 @@
             <![CDATA[AND TIME<=#{endTime}]]>
         </if>
     </select>
+
+    <delete id="delete">
+        DELETE FROM user where  ID IN (${id})
+    </delete>
 </mapper>

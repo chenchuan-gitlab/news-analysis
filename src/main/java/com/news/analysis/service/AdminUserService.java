@@ -33,4 +33,12 @@ public class AdminUserService {
         return pageForm;
     }
 
+    /**
+     * 删除数据
+     *
+     * @param id 数据id
+     */
+    public void delete(String id) {
+        adminUserMapper.delete(id);
+    }
 }

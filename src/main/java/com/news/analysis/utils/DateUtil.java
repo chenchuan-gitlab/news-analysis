@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
+ * DateUtil
  */
 public class DateUtil {
     public static String getDate_yMdhms(){

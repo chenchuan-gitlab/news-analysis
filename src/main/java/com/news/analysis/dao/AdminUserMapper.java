@@ -39,4 +39,11 @@ public interface AdminUserMapper {
      * @return 操作结果
      */
     int updateUser(User user);
+
+    /**
+     * 删除数据
+     *
+     * @param id 数据id
+     */
+    void delete(@Param("id") String id);
 }

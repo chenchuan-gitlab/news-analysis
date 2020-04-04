@@ -5,9 +5,7 @@ import com.news.analysis.utils.PageForm;
 import com.news.analysis.utils.ResponseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,5 +32,17 @@ public class AdminUserController {
             return ResponseBuilder.custom().faild();
         }
 
+    }
+
+    @RequestMapping(value = "/delete.action")
+    @ResponseBody
+    public Object delete(String id) {
+        try {
+            adminUserService.delete(id);
+            return ResponseBuilder.custom().success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBuilder.custom().faild();
+        }
     }
 }
