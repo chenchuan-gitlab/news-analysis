@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html;utf-8" pageEncoding="utf-8" %>
 <html class="x-admin-sm">
 <head>
     <meta charset="UTF-8">
@@ -26,36 +26,60 @@
     <div id="darkbannerwrap"></div>
 
     <form method="post" class="layui-form">
-        <input name="username" id="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+        <input name="username" placeholder="用户名" type="text" lay-verify="username" class="layui-input">
         <hr class="hr15">
-        <input name="password" id="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
+        <input name="password" lay-verify="password" placeholder="密码" type="password" class="layui-input">
         <hr class="hr15">
-        <button id="add" class="layui-btn" lay-filter="add" style="width:100%;" lay-submit="" type="button"
-                onclick="login()">登录
-        </button>
-        <!--<input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">-->
+        <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
         <hr class="hr20">
     </form>
 </div>
 
 <script>
-    function login() {
-        var username = $("#username").val();
-        var password = $("#password").val();
-        $.ajax({
-            url: "login.action",
-            type: "GET",
-            dataType: "text",
-            data: {"username": username, "password": password},
-            success: function (data) {
-                if (data == "success") {
-                    location.href = 'index.jsp'
-                } else {
-                    layer.alert("用户名或密码错误!")
+    $(function () {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(login)', function (data) {
+                var field = data.field;
+                // 密码md5加密
+                field.password = hexMD5(field.password);
+                $.ajax({
+                    url: "/login.action",
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json;charset=UTF-8",
+                    data: {"username": field.username, "password": field.password},
+                    success: function (data) {
+                        if (data.code == 1) {
+                            location.href = 'index.jsp'
+                        } else {
+                            layer.alert(data.message, {icon: 5})
+                        }
+                    },
+                    error: function () {
+                        layer.alert("请求失败", {icon: 5})
+                    }
+                });
+                return false;
+            });
+
+            //自定义验证规则
+            form.verify({
+                username: function (value) {
+                    if (value.length == 0) {
+                        return '请输入用户名';
+                    }
+                },
+                password: function (value) {
+                    if (value.length == 0) {
+                        return '请输入密码';
+                    }
                 }
-            }
-        })
-    }
+            });
+        });
+
+
+    })
 </script>
 </body>
 </html>

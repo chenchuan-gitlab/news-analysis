@@ -73,6 +73,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="noData" align="center">
+
+                </div>
                 <div class="layui-card-body ">
                     <div id="page" align="center">
 
@@ -201,31 +204,35 @@
                 object.rows[i].status + "</td><td>" + object.rows[i].timeStr + "</td>";
             html += "<td class='td-manage'>" +
                 "<a onclick='updateStatus(" + object.rows[i].id + "," + object.rows[i].statusCode + ")' href='javascript:;' title=" + title + "><i class='layui-icon' style='font-size: 23px'>&#xe669;</i></a>" +
-                "<a title='编辑' onclick=xadmin.open('编辑','./user-edit.jsp?id="+object.rows[i].id+"',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe642;</i></a>" +
+                "<a title='编辑' onclick=xadmin.open('编辑','./user-edit.jsp?id=" + object.rows[i].id + "',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe642;</i></a>" +
                 "<a title='删除' onclick=delData(" + object.rows[i].id + ") href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe640;</i> </a></td></tr>";
         }
         if (html.length == 0) {
-            html = "暂无数据";
+            $("#noData").html("<span>暂无数据</span>");
+            $("#page").empty();
+        } else {
+            $("#noData").empty();
         }
         $("tbody").html(html);
         // 渲染checkbox
         form.render("checkbox");
-        $("#recordSpan").text("共有数据：" + object.totalCount + " 条");
-        //分页
-        layui.use('laypage', function () {
-            var laypage = layui.laypage;
-            //执行一个laypage实例
-            laypage.render({
-                elem: 'page',
-                count: object.totalCount,
-                curr: object.pageNum,
-                jump: function (obj, first) {
-                    if (!first) {
-                        search(obj.curr);
+        if (object.rows.length != 0) {
+            //分页
+            layui.use('laypage', function () {
+                var laypage = layui.laypage;
+                //执行一个laypage实例
+                laypage.render({
+                    elem: 'page',
+                    count: object.totalCount,
+                    curr: object.pageNum,
+                    jump: function (obj, first) {
+                        if (!first) {
+                            search(obj.curr);
+                        }
                     }
-                }
+                });
             });
-        });
+        }
     }
 </script>
 </html>

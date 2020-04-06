@@ -27,7 +27,7 @@
                     <span class="x-red">*</span>登录名
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="userName" name="userName" lay-verify="required"
+                    <input type="text" id="userName" name="userName" lay-verify="nikename"
                            autocomplete="off" class="layui-input" required="">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
@@ -66,7 +66,8 @@
                 <label for="age" class="layui-form-label">年龄</label>
                 <div class="layui-input-inline">
                     <input type="number" id="age" name="age" autocomplete="off" class="layui-input" min="1"
-                           onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                           onkeyup="this.value=this.value.replace(/\D/g,'')"
+                           onafterpaste="this.value=this.value.replace(/\D/g,'')">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -106,6 +107,9 @@
                     if (value.length < 5) {
                         return '昵称至少得5个字符啊';
                     }
+                    if (value == 'admin') {
+                        return 'admin为超级管理员账号，无法添加';
+                    }
                 },
                 pass: [/(.+){6,12}$/, '密码必须6到12位'],
                 repass: function (value) {
@@ -128,17 +132,20 @@
                         contentType: "application/json;charset=UTF-8",
                         data: JSON.stringify(field),
                         success: function (data) {
-                            //发异步，把数据提交给php
-                            layer.alert("增加成功", {
-                                    icon: 6
-                                },
-                                function () {
-                                    //关闭当前frame
-                                    x_admin_close();
+                            if (data.code == 1) {
+                                layer.alert("增加成功", {
+                                        icon: 6
+                                    },
+                                    function () {
+                                        //关闭当前frame
+                                        x_admin_close();
 
-                                    // 可以对父窗口进行刷新
-                                    x_admin_father_reload();
-                                });
+                                        // 可以对父窗口进行刷新
+                                        x_admin_father_reload();
+                                    });
+                            } else {
+                                layer.alert("增加失败", {icon: 5});
+                            }
                         },
                         error: function () {
                             layer.alert("请求失败", {icon: 5})

@@ -8,7 +8,7 @@
     </insert>
     <!--获取用户信息-->
     <select id="getUserInfo" resultType="java.util.Map">
-        SELECT USER_NAME AS userName,PASSWORD AS password
+        SELECT USER_NAME AS userName,PASSWORD AS password,TYPE AS type
         FROM user
         WHERE USER_NAME = #{userName}
     </select>
