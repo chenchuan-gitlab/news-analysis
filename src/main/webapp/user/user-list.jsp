@@ -104,26 +104,25 @@
     });
 
     /*用户-停用*/
-    function member_stop(obj, id) {
-        layer.confirm('确认要停用吗？', function (index) {
-
-            if ($(obj).attr('title') == '启用') {
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title', '停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!', {icon: 5, time: 1000});
-
-            } else {
-                $(obj).attr('title', '启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!', {icon: 5, time: 1000});
-            }
-
+    function updateStatus(id, status) {
+        layer.confirm('确认要更新状态吗？', function (index) {
+            $.ajax({
+                url: "../user/updateStatus.action?id=" + id + "&status=" + status,
+                success: function (data) {
+                    var code = data.code;
+                    if (code === 0) {
+                        layer.alert("更新状态失败", {icon: 2});
+                    } else {
+                        layer.alert("更新状态成功", {icon: 1}, function (index) {
+                            layer.close(index);
+                            search(1);
+                        });
+                    }
+                },
+                error: function () {
+                    layer.alert("请求出错，请重试", {icon: 5});
+                }
+            })
         });
     }
 
@@ -141,7 +140,7 @@
             layer.confirm('确认要删除吗？', function (index) {
                 // 发异步删除数据
                 $.ajax({
-                    url: "/user/delete.action?id=" + checkedData,
+                    url: "../user/delete.action?id=" + checkedData,
                     success: function (data) {
                         var code = data.code;
                         if (code === 0) {
@@ -167,7 +166,7 @@
         var startTime = $("#startTime").val();
         var endTime = $("#endTime").val();
         $.ajax({
-            url: "/user/list.action",
+            url: "../user/list.action",
             type: "GET",
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
@@ -190,22 +189,25 @@
     // 渲染列表数据
     function showData(object) {
         var form = layui.form;
-        $("tbody").empty();
+        var html = "";
         for (var i = 0; i < object.rows.length; i++) {
             var title = "禁用";
             if (object.rows[i].statusCode == 0) {
                 title = "启用"
             }
-            var html = "<tr><td><input type='checkbox' name='' lay-skin='primary' value='" + object.rows[i].id + "' lay-filter='itemChoose'></td><td>" +
+            html += "<tr><td><input type='checkbox' name='' lay-skin='primary' value='" + object.rows[i].id + "' lay-filter='itemChoose'></td><td>" +
                 object.rows[i].userName + "</td><td>" + object.rows[i].phone + "</td><td>" +
                 object.rows[i].sex + "</td><td>" + object.rows[i].age + "</td><td>" + object.rows[i].type + "</td><td>" +
                 object.rows[i].status + "</td><td>" + object.rows[i].timeStr + "</td>";
             html += "<td class='td-manage'>" +
-                "<a onclick='member_stop(this," + object.rows[i].id + ")' href='javascript:;' title=" + title + "><i class='layui-icon' style='font-size: 23px'>&#xe669;</i></a>" +
-                "<a title='编辑' onclick=xadmin.open('编辑','./user-edit.jsp',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe642;</i></a>" +
+                "<a onclick='updateStatus(" + object.rows[i].id + "," + object.rows[i].statusCode + ")' href='javascript:;' title=" + title + "><i class='layui-icon' style='font-size: 23px'>&#xe669;</i></a>" +
+                "<a title='编辑' onclick=xadmin.open('编辑','./user-edit.jsp?id="+object.rows[i].id+"',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe642;</i></a>" +
                 "<a title='删除' onclick=delData(" + object.rows[i].id + ") href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe640;</i> </a></td></tr>";
-            $("tbody").append(html);
         }
+        if (html.length == 0) {
+            html = "暂无数据";
+        }
+        $("tbody").html(html);
         // 渲染checkbox
         form.render("checkbox");
         $("#recordSpan").text("共有数据：" + object.totalCount + " 条");

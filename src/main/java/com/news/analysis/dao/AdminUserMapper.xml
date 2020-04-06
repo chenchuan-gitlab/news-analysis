@@ -6,6 +6,34 @@
         VALUES(#{userName},#{password},#{phone},#{age},#{sex},#{type},#{status},#{time})
     </insert>
 
+    <update id="updateUser">
+        UPDATE user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null and '' != userName">
+                USER_NAME = #{userName},
+            </if>
+            <if test="password != null and '' != password">
+                PASSWORD= #{password},
+            </if>
+            <if test="phone != null and '' != phone">
+                PHONE = #{phone},
+            </if>
+            <if test="age != null">
+                AGE = #{age},
+            </if>
+            <if test="sex != null and '' != sex">
+                SEX = #{sex},
+            </if>
+            <if test="type != null">
+                `TYPE` = #{type},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+        </trim>
+        WHERE ID = #{id}
+    </update>
+
     <select id="getUserList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT ID AS id,USER_NAME AS userName,IFNULL(PHONE,'') AS phone,IFNULL(AGE,'') AS age,IFNULL(SEX,'') AS sex,
         (CASE TYPE WHEN 0 THEN '普通用户' ELSE '管理员' END) AS type,STATUS AS statusCode,
@@ -22,6 +50,12 @@
         <if test="endTime != null and '' != endTime">
             <![CDATA[AND TIME<=#{endTime}]]>
         </if>
+    </select>
+
+    <select id="getRecordByID" resultType="java.util.Map">
+        SELECT ID AS id, USER_NAME AS userName,IFNULL(PHONE,'') AS phone,IFNULL(AGE,'') AS age,IFNULL(SEX,'') AS sex,TYPE AS type
+        FROM user
+        WHERE ID = #{id}
     </select>
 
     <delete id="delete">

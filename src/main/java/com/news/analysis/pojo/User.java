@@ -10,13 +10,13 @@ public class User {
 
     private String phone;
 
-    private int age;
+    private Integer age;
 
     private String sex;
 
-    private int type;
+    private Integer type;
 
-    private int status;
+    private Integer status;
 
     private String time;
 
@@ -52,11 +52,11 @@ public class User {
         this.phone = phone;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -68,19 +68,19 @@ public class User {
         this.sex = sex;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

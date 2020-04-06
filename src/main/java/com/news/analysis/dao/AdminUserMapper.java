@@ -14,7 +14,7 @@ public interface AdminUserMapper {
      * @param id 记录id
      * @return 记录
      */
-    Map getRecordByID(Long id);
+    Map getRecordByID(@Param("id") Long id);
 
     /**
      * 插入
