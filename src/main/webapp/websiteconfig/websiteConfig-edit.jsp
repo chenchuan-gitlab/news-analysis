@@ -25,47 +25,32 @@
         <form class="layui-form">
             <input type="hidden" name="id" id="id">
             <div class="layui-form-item">
-                <label for="userName" class="layui-form-label">
-                    <span class="x-red">*</span>登录名
+                <label for="website" class="layui-form-label">
+                    <span class="x-red">*</span>网站名
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="userName" name="userName" lay-verify="required"
+                    <input type="text" id="website" name="website"
                            autocomplete="off" class="layui-input" required="">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>将会成为您唯一的登入名
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="phone" class="layui-form-label"><span class="x-red">*</span>手机</label>
+                <label for="newsType" class="layui-form-label">
+                    <span class="x-red">*</span>新闻类型
+                </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="phone" name="phone" required="" lay-verify="phone"
+                    <input type="text" id="newsType" name="newsType"
+                           autocomplete="off" class="layui-input" required="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="url" class="layui-form-label">
+                    <span class="x-red">*</span>地址
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="url" require="" lay-verify="url"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label for="age" class="layui-form-label">年龄</label>
-                <div class="layui-input-inline">
-                    <input type="number" id="age" name="age" autocomplete="off" class="layui-input" min="1"
-                           onkeyup="this.value=this.value.replace(/\D/g,'')"
-                           onafterpaste="this.value=this.value.replace(/\D/g,'')">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"><span class="x-red">*</span>性别</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="sex" value="男" title="男">
-                    <input type="radio" name="sex" value="女" title="女">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"><span class="x-red">*</span>角色</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="type" value="1" title="管理员">
-                    <input type="radio" name="type" value="0" title="普通人员">
-                </div>
-            </div>
-
             <div class="layui-form-item">
                 </label>
                 <button class="layui-btn" lay-filter="add" lay-submit="">
@@ -81,37 +66,19 @@
         // 获取上一个页面传送过来的参数
         var param = window.location.search;
         $.ajax({
-            url: "../user/getUserByID.action" + param,
+            url: "../website/getDataByID.action" + param,
             type: "GET",
             success: function (data) {
                 var code = data.code;
                 if (code === 0) {
                     layer.alert("查询出错", {icon: 2});
                 } else {
-                    var userData = data.data;
-                    if (userData !== null) {
-                        $("#id").val(userData.id);
-                        $("#userName").val(userData.userName);
-                        $("#phone").val(userData.phone);
-                        $("#age").val(userData.age);
-                        // 给性别赋值
-
-                        $("input[name='sex']").each(function (index, element) {
-                            //判断当前按钮的值与input的值是否一致，一致则赋值
-                            if ($(this).val() == userData.sex) {
-                                $(this).prop("checked", true);
-                            }
-
-                        });
-                        // 给角色赋值
-                        $("input[name='type']").each(function (index, element) {
-                            //判断当前按钮的值与input的值是否一致，一致则赋值
-                            if ($(this).val() == userData.type) {
-                                $(this).prop("checked", true);
-                            }
-
-                        });
-                        form.render();
+                    var _data = data.data;
+                    if (_data !== null) {
+                        $("#id").val(_data.id);
+                        $("#website").val(_data.website);
+                        $("#newsType").val(_data.newsType);
+                        $("#url").val(_data.url);
                     } else {
                         layer.alert("数据获取失败", {
                                 icon: 5
@@ -134,25 +101,12 @@
             $ = layui.jquery;
             var form = layui.form,
                 layer = layui.layer;
-
-            //自定义验证规则
-            form.verify({
-                nikename: function (value) {
-                    if (value.length < 5) {
-                        return '昵称至少得5个字符啊';
-                    }
-                    if (value == 'admin') {
-                        return 'admin为超级管理员账号，无法添加';
-                    }
-                }
-            });
-
             //监听提交
             form.on('submit(add)',
                 function (data) {
                     var field = data.field;
                     $.ajax({
-                        url: "../user/updateUser.action",
+                        url: "../website/update.action",
                         type: "POST",
                         dataType: "json",
                         contentType: "application/json;charset=UTF-8",

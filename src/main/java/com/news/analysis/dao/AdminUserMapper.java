@@ -1,6 +1,5 @@
 package com.news.analysis.dao;
 
-import com.news.analysis.pojo.CowFood;
 import com.news.analysis.pojo.User;
 import org.apache.ibatis.annotations.Param;
 

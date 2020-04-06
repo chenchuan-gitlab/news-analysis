@@ -56,63 +56,24 @@
                     <cite>用户管理</cite></a>
             </li>
             <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="原料管理">&#xe6b8;</i>
-                    <cite>原料管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('原料奶管理','material-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>原料奶管理</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('辅料采购管理','excipients-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>辅料采购管理</cite></a>
-                    </li>
-                </ul>
+                <a onclick="xadmin.add_tab('新闻网站管理','websiteconfig/websiteConfig-list.jsp')">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>新闻网站管理</cite></a>
             </li>
             <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="分类管理">&#xe723;</i>
-                    <cite>生产管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('生产信息','production-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>生产信息</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('产品信息','product-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>产品信息</cite></a>
-                    </li>
-                </ul>
+                <a onclick="xadmin.add_tab('新闻管理','newsinfo/newsInfo-list.jsp')">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>新闻管理</cite></a>
             </li>
             <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="订单管理">&#xe723;</i>
-                    <cite>仓储管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('入库信息','warehousing-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>入库信息</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('出库信息','out-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>出库信息</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('库存信息','stock-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>库存信息</cite></a>
-                    </li>
-                </ul>
+                <a onclick="xadmin.add_tab('评论管理','comment/comment-list.jsp')">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>评论管理</cite></a>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('回复管理','reply/reply-list.jsp')">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>回复管理</cite></a>
             </li>
         </ul>
     </div>

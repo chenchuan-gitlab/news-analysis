@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.news.analysis.dao.WebsiteConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.news.analysis.pojo.WebsiteConfig" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="WEBSITE" property="website" jdbcType="VARCHAR" />
+    <result column="NEWS_TYPE" property="newsType" jdbcType="VARCHAR" />
+    <result column="URL" property="url" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WEBSITE, NEWS_TYPE, URL, STATUS, TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from website_config
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectList" resultType="java.util.Map">
+      SELECT ID AS id,WEBSITE AS website,NEWS_TYPE AS newsType,URL AS url,STATUS AS statusCode,
+      (CASE STATUS WHEN 0 THEN '禁用' ELSE '启用' END) AS status,DATE_FORMAT(TIME,'%Y-%m-%d %H:%i:%s') AS time
+      FROM website_config
+      WHERE 1=1
+      <if test="website != null and '' != website">
+        <bind name="pattern" value="'%' + website+ '%'"/>
+        AND WEBSITE LIKE #{pattern}
+      </if>
+      <if test="startTime != null and '' != startTime">
+        AND TIME>=#{startTime}
+      </if>
+      <if test="endTime != null and '' != endTime">
+        <![CDATA[AND TIME<=#{endTime}]]>
+      </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from website_config
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByIds" parameterType="java.lang.String">
+    DELETE FROM website_config where  ID IN (${id})
+  </delete>
+  <insert id="insert" parameterType="com.news.analysis.pojo.WebsiteConfig" >
+    insert into website_config (ID, WEBSITE, NEWS_TYPE, 
+      URL, STATUS, TIME
+      )
+    values (#{id,jdbcType=BIGINT}, #{website,jdbcType=VARCHAR}, #{newsType,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.news.analysis.pojo.WebsiteConfig" >
+    insert into website_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="website != null" >
+        WEBSITE,
+      </if>
+      <if test="newsType != null" >
+        NEWS_TYPE,
+      </if>
+      <if test="url != null" >
+        URL,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="time != null" >
+        TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null" >
+        #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.news.analysis.pojo.WebsiteConfig" >
+    update website_config
+    <set >
+      <if test="website != null" >
+        WEBSITE = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null" >
+        NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        TIME = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.news.analysis.pojo.WebsiteConfig" >
+    update website_config
+    set WEBSITE = #{website,jdbcType=VARCHAR},
+      NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      TIME = #{time,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

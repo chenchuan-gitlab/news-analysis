@@ -44,7 +44,7 @@
                 // 密码md5加密
                 field.password = hexMD5(field.password);
                 $.ajax({
-                    url: "/login.action",
+                    url: "login.action",
                     type: "GET",
                     dataType: "json",
                     contentType: "application/json;charset=UTF-8",

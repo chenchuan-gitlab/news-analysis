@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.news.analysis.dao.NewsInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.news.analysis.pojo.NewsInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="SITE_NAME" property="siteName" jdbcType="VARCHAR" />
+    <result column="NEWS_TYPE" property="newsType" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="SOURCE" property="source" jdbcType="VARCHAR" />
+    <result column="NEW_URL" property="newUrl" jdbcType="VARCHAR" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SITE_NAME, NEWS_TYPE, TITLE, SOURCE, NEW_URL, TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from news_info
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectList" resultType="java.util.Map">
+
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from news_info
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.news.analysis.pojo.NewsInfo" >
+    insert into news_info (ID, SITE_NAME, NEWS_TYPE, 
+      TITLE, SOURCE, NEW_URL, 
+      TIME)
+    values (#{id,jdbcType=BIGINT}, #{siteName,jdbcType=VARCHAR}, #{newsType,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{newUrl,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.news.analysis.pojo.NewsInfo" >
+    insert into news_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="siteName != null" >
+        SITE_NAME,
+      </if>
+      <if test="newsType != null" >
+        NEWS_TYPE,
+      </if>
+      <if test="title != null" >
+        TITLE,
+      </if>
+      <if test="source != null" >
+        SOURCE,
+      </if>
+      <if test="newUrl != null" >
+        NEW_URL,
+      </if>
+      <if test="time != null" >
+        TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="siteName != null" >
+        #{siteName,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null" >
+        #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="newUrl != null" >
+        #{newUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.news.analysis.pojo.NewsInfo" >
+    update news_info
+    <set >
+      <if test="siteName != null" >
+        SITE_NAME = #{siteName,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null" >
+        NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        TITLE = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        SOURCE = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="newUrl != null" >
+        NEW_URL = #{newUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        TIME = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.news.analysis.pojo.NewsInfo" >
+    update news_info
+    set SITE_NAME = #{siteName,jdbcType=VARCHAR},
+      NEWS_TYPE = #{newsType,jdbcType=VARCHAR},
+      TITLE = #{title,jdbcType=VARCHAR},
+      SOURCE = #{source,jdbcType=VARCHAR},
+      NEW_URL = #{newUrl,jdbcType=VARCHAR},
+      TIME = #{time,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
