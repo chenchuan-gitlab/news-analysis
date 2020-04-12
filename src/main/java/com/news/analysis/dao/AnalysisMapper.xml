@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.news.analysis.dao.AnalysisMapper">
+    <insert id="saveData" parameterType="java.util.List">
+        INSERT INTO news_info(SITE_NAME,NEWS_TYPE,TITLE,NEWS_URL,TIME)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+            #{item.siteName,jdbcType=VARCHAR},
+            #{item.newsType,jdbcType=VARCHAR},
+            #{item.title,jdbcType=VARCHAR},
+            #{item.newsUrl,jdbcType=VARCHAR},
+            #{item.time,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+
+    </insert>
+
+    <select id="getUrlList" resultType="java.util.Map">
+        SELECT
+	        wc.WEBSITE AS siteName,
+	        wc.NEWS_TYPE AS newsType,
+	        wc.URL AS newsUrl,
+	        ni.time
+        FROM
+	        website_config wc
+	        LEFT JOIN ( SELECT SITE_NAME AS siteName, NEWS_TYPE AS newsType, DATE_FORMAT( MAX( TIME ), '%Y-%m-%d %H:%i:%s' ) AS time FROM news_info GROUP BY SITE_NAME, NEWS_TYPE ) ni ON wc.WEBSITE = ni.siteName
+	        AND wc.NEWS_TYPE = ni.newsType AND wc.`STATUS`=1
+    </select>
+
+
+</mapper>

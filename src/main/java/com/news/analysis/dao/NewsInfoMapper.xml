@@ -6,12 +6,11 @@
     <result column="SITE_NAME" property="siteName" jdbcType="VARCHAR" />
     <result column="NEWS_TYPE" property="newsType" jdbcType="VARCHAR" />
     <result column="TITLE" property="title" jdbcType="VARCHAR" />
-    <result column="SOURCE" property="source" jdbcType="VARCHAR" />
-    <result column="NEW_URL" property="newUrl" jdbcType="VARCHAR" />
+    <result column="NEWS_URL" property="newsUrl" jdbcType="VARCHAR" />
     <result column="TIME" property="time" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ID, SITE_NAME, NEWS_TYPE, TITLE, SOURCE, NEW_URL, TIME
+    ID, SITE_NAME, NEWS_TYPE, TITLE,NEWS_URL, TIME
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -20,8 +19,17 @@
     where ID = #{id,jdbcType=BIGINT}
   </select>
     <select id="selectList" resultType="java.util.Map">
-
-
+        SELECT
+            ID AS id,
+            SITE_NAME AS siteName,
+            NEWS_TYPE AS newsType,
+            TITLE AS title,
+            NEWS_URL AS newsUrl,
+            DATE_FORMAT( TIME, '%Y-%m-%d %H:%i:%s' ) AS time
+        FROM
+            news_info
+        ORDER BY
+            time DESC
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from news_info

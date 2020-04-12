@@ -14,11 +14,13 @@ public interface CommentMapper {
 
     List<Map> selectList(Map params);
 
-    Comment selectByPrimaryKey(Long id);
+    Map selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Comment record);
 
     int updateByPrimaryKeyWithBLOBs(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    List getCommentData();
 }

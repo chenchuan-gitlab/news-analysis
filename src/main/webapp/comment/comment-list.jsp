@@ -49,9 +49,7 @@
                                 <input type="checkbox" name="allCheck" lay-skin="primary" lay-filter="allChoose">
                             </th>
                             <th>用户名</th>
-                            <th>评论标题</th>
                             <th>评论内容</th>
-                            <th>评论时间</th>
                             <th>状态</th>
                             <th>评论时间</th>
                             <th>操作</th>
@@ -155,7 +153,6 @@
             }
             html += "<tr><td><input type='checkbox' name='' lay-skin='primary' value='" + object.rows[i].id + "' lay-filter='itemChoose'></td><td>" +
                 object.rows[i].userName + "</td><td>" +
-                object.rows[i].title + "</td><td>" +
                 object.rows[i].content + "</td><td>" +
                 object.rows[i].status + "</td><td>" +
                 object.rows[i].time + "</td>";

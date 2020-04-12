@@ -156,9 +156,9 @@
                 object.rows[i].commentUserName + "</td><td>" +
                 object.rows[i].comment + "</td><td>" +
                 object.rows[i].reply + "</td><td>" +
-                object.rows[i].timeStr + "</td>";
+                object.rows[i].time + "</td>";
             html += "<td class='td-manage'>" +
-                "<a title='查看' onclick=xadmin.open('查看','./reply-vies.jsp?id=" + object.rows[i].id + "',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe663;</i></a></td></tr>";
+                "<a title='查看' onclick=xadmin.open('查看','./reply-view.jsp?id=" + object.rows[i].id + "',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe633;</i></a></td></tr>";
         }
         if (html.length == 0) {
             $("#noData").html("<span>暂无数据</span>");

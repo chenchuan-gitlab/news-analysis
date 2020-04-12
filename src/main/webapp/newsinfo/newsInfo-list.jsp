@@ -51,7 +51,6 @@
                             <th>站点名称</th>
                             <th>新闻类型</th>
                             <th>标题</th>
-                            <th>来源</th>
                             <th>新闻地址</th>
                             <th>时间</th>
                             <th>操作</th>
@@ -134,7 +133,6 @@
                 object.rows[i].siteName + "</td><td>" +
                 object.rows[i].newsType + "</td><td>" +
                 object.rows[i].title + "</td><td>" +
-                object.rows[i].source + "</td><td>" +
                 object.rows[i].newsUrl + "</td><td>" +
                 object.rows[i].time + "</td>";
             html += "<td class='td-manage'>" +

@@ -11,11 +11,11 @@ public class Reply {
 
     private Long replyTo;
 
-    private Date replayTime;
+    private String replayTime;
 
     private Integer status;
 
-    private String replyCotnet;
+    private String replyContent;
 
     public Long getId() {
         return id;
@@ -49,11 +49,11 @@ public class Reply {
         this.replyTo = replyTo;
     }
 
-    public Date getReplayTime() {
+    public String getReplayTime() {
         return replayTime;
     }
 
-    public void setReplayTime(Date replayTime) {
+    public void setReplayTime(String replayTime) {
         this.replayTime = replayTime;
     }
 
@@ -65,11 +65,11 @@ public class Reply {
         this.status = status;
     }
 
-    public String getReplyCotnet() {
-        return replyCotnet;
+    public String getReplyContent() {
+        return replyContent;
     }
 
-    public void setReplyCotnet(String replyCotnet) {
-        this.replyCotnet = replyCotnet == null ? null : replyCotnet.trim();
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent == null ? null : replyContent.trim();
     }
 }

@@ -21,8 +21,7 @@ public class CommentService {
 
     public PageForm getList(PageForm pageForm, Map params) {
         Page page = PageHelper.startPage(pageForm.getPageNum(), pageForm.getPageSize());
-        //List<Map> recordList = commentMapper.selectList(params);
-        List<Map> recordList = new ArrayList<>();
+        List<Map> recordList = commentMapper.selectList(params);
         pageForm.setRows(recordList);
         pageForm.setTotalCount(page.getTotal());
         return pageForm;

@@ -34,14 +34,6 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="title" class="layui-form-label">
-                    <span class="x-red">*</span>评论标题</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="title"
-                           autocomplete="off" class="layui-input" readonly>
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <label for="content" class="layui-form-label">
                     <span class="x-red">*</span>评论内容</label>
                 <div class="layui-input-inline">
@@ -83,7 +75,6 @@
                     if (_data !== null) {
                         $("#id").val(_data.id);
                         $("#userName").val(_data.userName);
-                        $("#title").val(_data.title);
                         $("#content").val(_data.content);
                         $("#time").val(_data.time);
                     } else {

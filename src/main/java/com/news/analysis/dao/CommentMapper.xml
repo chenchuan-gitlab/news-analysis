@@ -4,40 +4,78 @@
   <resultMap id="BaseResultMap" type="com.news.analysis.pojo.Comment" >
     <id column="ID" property="id" jdbcType="BIGINT" />
     <result column="USER_ID" property="userId" jdbcType="BIGINT" />
-    <result column="TITLE" property="title" jdbcType="VARCHAR" />
     <result column="TIME" property="time" jdbcType="TIMESTAMP" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.news.analysis.pojo.Comment" extends="BaseResultMap" >
     <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
+  
+  <resultMap id="BaseResultVoMap" type="com.news.analysis.pojo.CommentVo">
+    <id column="id" property="id"/>
+    <result column="userId" property="userId"/>
+    <result column="userName" property="userName"/>
+    <result column="commentTime" property="commentTime"/>
+    <result column="content" property="content"/>
+    <collection property="replyList" javaType="java.util.ArrayList" ofType="java.util.Map">
+      <id column="replyId" property="replyId"/>
+      <result column="replyUserId" property="replyUserId"/>
+      <result column="replyUserName" property="replyUserName"/>
+      <result column="replyTo" property="replyTo"/>
+      <result column="replyContent" property="replyContent"/>
+      <result column="replyTime" property="replyTime"/>
+    </collection>
+  </resultMap>
+
   <sql id="Base_Column_List" >
-    ID, USER_ID, TITLE, TIME, STATUS
+    ID, USER_ID, TIME, STATUS
   </sql>
   <sql id="Blob_Column_List" >
     CONTENT
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from comment
-    where ID = #{id,jdbcType=BIGINT}
+  <select id="selectByPrimaryKey" resultType="java.util.Map" parameterType="java.lang.Long" >
+    SELECT
+            c.ID AS id,
+            u.USER_NAME AS userName,
+            c.CONTENT AS content,
+            c.STATUS AS statusCode,
+            ( CASE c.STATUS WHEN 0 THEN '禁用' ELSE '启用' END ) AS status,
+            DATE_FORMAT( c.TIME, '%Y-%m-%d %H:%i:%s' ) AS time
+        FROM
+            COMMENT c,
+            USER u
+        WHERE
+            c.ID=#{id}
+            AND c.USER_ID = u.ID
+        ORDER BY
+            time DESC
   </select>
   <select id="selectList" resultType="java.util.Map">
-
-
+        SELECT
+            c.ID AS id,
+            u.USER_NAME AS userName,
+            c.CONTENT AS content,
+            c.STATUS AS statusCode,
+            ( CASE c.STATUS WHEN 0 THEN '禁用' ELSE '启用' END ) AS status,
+            DATE_FORMAT( c.TIME, '%Y-%m-%d %H:%i:%s' ) AS time
+        FROM
+            COMMENT c,
+            USER u
+        WHERE
+            c.USER_ID = u.ID
+        ORDER BY
+            time DESC
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from comment
     where ID = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.news.analysis.pojo.Comment" >
-    insert into comment (ID, USER_ID, TITLE, 
+    insert into comment (ID, USER_ID,
       TIME, STATUS, CONTENT
       )
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
       #{time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -49,9 +87,6 @@
       </if>
       <if test="userId != null" >
         USER_ID,
-      </if>
-      <if test="title != null" >
-        TITLE,
       </if>
       <if test="time != null" >
         TIME,
@@ -69,9 +104,6 @@
       </if>
       <if test="userId != null" >
         #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="title != null" >
-        #{title,jdbcType=VARCHAR},
       </if>
       <if test="time != null" >
         #{time,jdbcType=TIMESTAMP},
@@ -122,4 +154,46 @@
       STATUS = #{status,jdbcType=INTEGER}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="getCommentData" resultMap="BaseResultVoMap">
+      SELECT
+          c.ID AS ID,
+          c.USER_ID AS userID,
+          u.USER_NAME AS userName,
+          DATE_FORMAT( c.TIME, '%Y-%m-%d %H:%i:%s' ) AS commentTime,
+          c.CONTENT AS content,
+          rp.ID AS replyID,
+          rp.replyUserId AS replyUserId,
+	      rp.replyUserNAME AS replyUserNAME,
+          rp.replyTo AS replyTo,
+          rp.replyContent AS replyContent,
+          rp.replyTime AS replyTime
+      FROM
+          COMMENT c
+          LEFT JOIN
+          (
+          SELECT
+              r.ID,
+              r.COMMENT_ID AS commentId,
+              r.USER_ID AS replyUserId,
+              u1.USER_NAME AS replyUserNAME,
+              u2.USER_NAME AS replyTo,
+              r.REPLY_CONTENT AS replyContent,
+              DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d %H:%i:%s' ) AS replyTime
+          FROM
+              reply r,
+              USER u1,
+              USER u2
+          WHERE
+              r.USER_ID = u1.ID
+              AND r.REPLY_TO = u2.ID
+              AND r.`STATUS` = 1
+          ) rp  ON c.ID = rp.commentId,
+      USER u
+      WHERE
+          c.USER_ID = u.ID
+          AND c.`STATUS` = 1
+      ORDER BY
+          c.TIME DESC
+  </select>
 </mapper>

@@ -50,14 +50,6 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="source" class="layui-form-label">
-                    <span class="x-red">*</span>来源</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="source"
-                           autocomplete="off" class="layui-input" readonly>
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <label for="newsUrl" class="layui-form-label">
                     <span class="x-red">*</span>新闻地址</label>
                 <div class="layui-input-inline">
@@ -100,7 +92,6 @@
                         $("#siteName").val(_data.siteName);
                         $("#newsType").val(_data.newsType);
                         $("#title").val(_data.title);
-                        $("#source").val(_data.source);
                         $("#newsUrl").val(_data.newsUrl);
                         $("#time").val(_data.time);
                     } else {

@@ -22,8 +22,7 @@ public class ReplyService {
 
     public PageForm getList(PageForm pageForm, Map params) {
         Page page = PageHelper.startPage(pageForm.getPageNum(), pageForm.getPageSize());
-        //List<Map> recordList = replyMapper.selectList(params);
-        List<Map> recordList = new ArrayList<>();
+        List<Map> recordList = replyMapper.selectList(params);
         pageForm.setRows(recordList);
         pageForm.setTotalCount(page.getTotal());
         return pageForm;

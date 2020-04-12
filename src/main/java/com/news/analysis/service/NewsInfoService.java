@@ -21,8 +21,7 @@ public class NewsInfoService {
 
     public PageForm getList(PageForm pageForm, Map params) {
         Page page = PageHelper.startPage(pageForm.getPageNum(), pageForm.getPageSize());
-        // List<Map> recordList = newsInfoMapper.selectList(params);
-        List<Map> recordList = new ArrayList<>();
+        List<Map> recordList = newsInfoMapper.selectList(params);
         pageForm.setRows(recordList);
         pageForm.setTotalCount(page.getTotal());
         return pageForm;

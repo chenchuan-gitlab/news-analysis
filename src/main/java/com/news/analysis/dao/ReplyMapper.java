@@ -12,7 +12,7 @@ public interface ReplyMapper {
 
     int insertSelective(Reply record);
 
-    Reply selectByPrimaryKey(Long id);
+    Map selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Reply record);
 

@@ -65,6 +65,7 @@ public class UserController extends ResponseBuilder {
             Map resMap = new HashMap(2);
             if (flag) {
                 resMap.put("mes", "登录成功");
+                resMap.put("userInfo",userInfo);
                 return ResponseBuilder.custom().success().data(resMap);
             } else {
                 resMap.put("mes", "登陆失败");

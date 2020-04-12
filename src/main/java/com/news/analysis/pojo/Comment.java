@@ -7,9 +7,7 @@ public class Comment {
 
     private Long userId;
 
-    private String title;
-
-    private Date time;
+    private String time;
 
     private Integer status;
 
@@ -31,19 +29,11 @@ public class Comment {
         this.userId = userId;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
-    }
-
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

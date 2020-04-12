@@ -1,132 +1,184 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.news.analysis.dao.ReplyMapper" >
-  <resultMap id="BaseResultMap" type="com.news.analysis.pojo.Reply" >
-    <id column="ID" property="id" jdbcType="BIGINT" />
-    <result column="USER_ID" property="userId" jdbcType="BIGINT" />
-    <result column="COMMENT_ID" property="commentId" jdbcType="BIGINT" />
-    <result column="REPLY_TO" property="replyTo" jdbcType="BIGINT" />
-    <result column="REPLAY_TIME" property="replayTime" jdbcType="TIMESTAMP" />
-    <result column="STATUS" property="status" jdbcType="INTEGER" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.news.analysis.pojo.Reply" extends="BaseResultMap" >
-    <result column="REPLY_COTNET" property="replyCotnet" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.news.analysis.dao.ReplyMapper">
+    <resultMap id="BaseResultMap" type="com.news.analysis.pojo.Reply">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="USER_ID" property="userId" jdbcType="BIGINT"/>
+        <result column="COMMENT_ID" property="commentId" jdbcType="BIGINT"/>
+        <result column="REPLY_TO" property="replyTo" jdbcType="BIGINT"/>
+        <result column="REPLAY_TIME" property="replayTime" jdbcType="TIMESTAMP"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.news.analysis.pojo.Reply" extends="BaseResultMap">
+        <result column="REPLY_CONTENT" property="replyContent" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     ID, USER_ID, COMMENT_ID, REPLY_TO, REPLAY_TIME, STATUS
   </sql>
-  <sql id="Blob_Column_List" >
-    REPLY_COTNET
+    <sql id="Blob_Column_List">
+    REPLY_CONTENT
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from reply
-    where ID = #{id,jdbcType=BIGINT}
-  </select>
-    <select id="selectList" resultType="java.util.Map">
-
-
-
+    <select id="selectByPrimaryKey" resultType="java.util.Map" parameterType="java.lang.Long">
+        SELECT
+            r.id,
+            c.CONTENT AS comment,
+            r.replyUserName,
+            r.commentUserName,
+            r.reply,
+            r.time
+        FROM
+            COMMENT c,
+            (
+            SELECT
+                r.ID AS id,
+                r.COMMENT_ID AS commentId,
+                u1.USER_NAME AS replyUserName,
+                u2.USER_NAME AS commentUserName,
+                r.REPLY_CONTENT AS reply,
+                DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d %H:%i:%s' ) AS time
+            FROM
+                reply r,
+                USER u1,
+                USER u2
+            WHERE
+                r.USER_ID = u1.ID
+                AND r.REPLY_TO = u2.ID
+                AND r.`STATUS` = 1
+                AND r.ID=#{id}
+            ) r
+        WHERE
+            c.ID = r.commentId
+        ORDER BY
+            r.time DESC
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <select id="selectList" resultType="java.util.Map">
+        SELECT
+            r.id,
+            c.CONTENT AS comment,
+            r.replyUserName,
+            r.commentUserName,
+            r.reply,
+            r.time
+        FROM
+            COMMENT c,
+            (
+            SELECT
+                r.ID AS id,
+                r.COMMENT_ID AS commentId,
+                u1.USER_NAME AS replyUserName,
+                u2.USER_NAME AS commentUserName,
+                r.REPLY_CONTENT AS reply,
+                DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d %H:%i:%s' ) AS time
+            FROM
+                reply r,
+                USER u1,
+                USER u2
+            WHERE
+                r.USER_ID = u1.ID
+                AND r.REPLY_TO = u2.ID
+                AND r.`STATUS` = 1
+            ) r
+        WHERE
+            c.ID = r.commentId
+        ORDER BY
+            r.time DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from reply
     where ID = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.news.analysis.pojo.Reply" >
+    <insert id="insert" parameterType="com.news.analysis.pojo.Reply">
     insert into reply (ID, USER_ID, COMMENT_ID, 
       REPLY_TO, REPLAY_TIME, STATUS, 
-      REPLY_COTNET)
+      REPLY_CONTENT)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{commentId,jdbcType=BIGINT}, 
       #{replyTo,jdbcType=BIGINT}, #{replayTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
-      #{replyCotnet,jdbcType=LONGVARCHAR})
+      #{replyContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.news.analysis.pojo.Reply" >
-    insert into reply
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        ID,
-      </if>
-      <if test="userId != null" >
-        USER_ID,
-      </if>
-      <if test="commentId != null" >
-        COMMENT_ID,
-      </if>
-      <if test="replyTo != null" >
-        REPLY_TO,
-      </if>
-      <if test="replayTime != null" >
-        REPLAY_TIME,
-      </if>
-      <if test="status != null" >
-        STATUS,
-      </if>
-      <if test="replyCotnet != null" >
-        REPLY_COTNET,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="commentId != null" >
-        #{commentId,jdbcType=BIGINT},
-      </if>
-      <if test="replyTo != null" >
-        #{replyTo,jdbcType=BIGINT},
-      </if>
-      <if test="replayTime != null" >
-        #{replayTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="replyCotnet != null" >
-        #{replyCotnet,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.news.analysis.pojo.Reply" >
-    update reply
-    <set >
-      <if test="userId != null" >
-        USER_ID = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="commentId != null" >
-        COMMENT_ID = #{commentId,jdbcType=BIGINT},
-      </if>
-      <if test="replyTo != null" >
-        REPLY_TO = #{replyTo,jdbcType=BIGINT},
-      </if>
-      <if test="replayTime != null" >
-        REPLAY_TIME = #{replayTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        STATUS = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="replyCotnet != null" >
-        REPLY_COTNET = #{replyCotnet,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.news.analysis.pojo.Reply" >
+    <insert id="insertSelective" parameterType="com.news.analysis.pojo.Reply">
+        insert into reply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="commentId != null">
+                COMMENT_ID,
+            </if>
+            <if test="replyTo != null">
+                REPLY_TO,
+            </if>
+            <if test="replayTime != null">
+                REPLAY_TIME,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="replyContent != null">
+                REPLY_CONTENT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="commentId != null">
+                #{commentId,jdbcType=BIGINT},
+            </if>
+            <if test="replyTo != null">
+                #{replyTo,jdbcType=BIGINT},
+            </if>
+            <if test="replayTime != null">
+                #{replayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="replyContent != null">
+                #{replyContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.news.analysis.pojo.Reply">
+        update reply
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="commentId != null">
+                COMMENT_ID = #{commentId,jdbcType=BIGINT},
+            </if>
+            <if test="replyTo != null">
+                REPLY_TO = #{replyTo,jdbcType=BIGINT},
+            </if>
+            <if test="replayTime != null">
+                REPLAY_TIME = #{replayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="replyContent != null">
+                REPLY_CONTENT = #{replyContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.news.analysis.pojo.Reply">
     update reply
     set USER_ID = #{userId,jdbcType=BIGINT},
       COMMENT_ID = #{commentId,jdbcType=BIGINT},
       REPLY_TO = #{replyTo,jdbcType=BIGINT},
       REPLAY_TIME = #{replayTime,jdbcType=TIMESTAMP},
       STATUS = #{status,jdbcType=INTEGER},
-      REPLY_COTNET = #{replyCotnet,jdbcType=LONGVARCHAR}
+      REPLY_CONTENT = #{replyContent,jdbcType=LONGVARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.news.analysis.pojo.Reply" >
+    <update id="updateByPrimaryKey" parameterType="com.news.analysis.pojo.Reply">
     update reply
     set USER_ID = #{userId,jdbcType=BIGINT},
       COMMENT_ID = #{commentId,jdbcType=BIGINT},

@@ -1,8 +1,6 @@
 package com.news.analysis.pojo;
 
-import java.util.Date;
-
-public class NewsInfo {
+public class ParserResultEntity {
     private Long id;
 
     private String siteName;
@@ -13,7 +11,7 @@ public class NewsInfo {
 
     private String newsUrl;
 
-    private Date time;
+    private String time;
 
     public Long getId() {
         return id;
@@ -28,7 +26,7 @@ public class NewsInfo {
     }
 
     public void setSiteName(String siteName) {
-        this.siteName = siteName == null ? null : siteName.trim();
+        this.siteName = siteName;
     }
 
     public String getNewsType() {
@@ -36,7 +34,7 @@ public class NewsInfo {
     }
 
     public void setNewsType(String newsType) {
-        this.newsType = newsType == null ? null : newsType.trim();
+        this.newsType = newsType;
     }
 
     public String getTitle() {
@@ -44,7 +42,7 @@ public class NewsInfo {
     }
 
     public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.title = title;
     }
 
     public String getNewsUrl() {
@@ -52,14 +50,26 @@ public class NewsInfo {
     }
 
     public void setNewsUrl(String newsUrl) {
-        this.newsUrl = newsUrl == null ? null : newsUrl.trim();
+        this.newsUrl = newsUrl;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "ParserResultEntity{" +
+                "id=" + id +
+                ", siteName='" + siteName + '\'' +
+                ", newsType='" + newsType + '\'' +
+                ", title='" + title + '\'' +
+                ", newsUrl='" + newsUrl + '\'' +
+                ", time='" + time + '\'' +
+                '}';
     }
 }
