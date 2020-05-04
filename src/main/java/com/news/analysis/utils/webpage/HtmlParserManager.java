@@ -3,8 +3,10 @@ package com.news.analysis.utils.webpage;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.news.analysis.pojo.ParserResultEntity;
-import org.springframework.security.access.intercept.AfterInvocationManager;
-import org.springframework.stereotype.Component;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +17,19 @@ import java.util.regex.Pattern;
  * 数据爬取管理器
  */
 public class HtmlParserManager {
-    public static List<ParserResultEntity> parseHtml(String html, String time, String siteName, String newsType) {
+    // 中国青年网
+    public static List<ParserResultEntity> parseYouthHtml(String html, String time, String siteName, String newsType) {
         List<ParserResultEntity> dataList = new ArrayList<>();
         // 先把ul拿到
         String regex = "<ul[\\s\\S]*?</ul>";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(html);
         if (matcher.find()) {
-            String ulBlockHtmlSrouce = matcher.group();
+            String ulBlockHtmlSource = matcher.group();
             // 匹配li
             String regexLi = "<li[\\s\\S]*?</li>";
             pattern = Pattern.compile(regexLi);
-            matcher = pattern.matcher(ulBlockHtmlSrouce);
+            matcher = pattern.matcher(ulBlockHtmlSource);
             while (matcher.find()) {
                 ParserResultEntity resultEntity = new ParserResultEntity();
                 String liHtmlSource = matcher.group();
@@ -57,6 +60,33 @@ public class HtmlParserManager {
                         dataList.add(resultEntity);
                     }
                 }
+            }
+        }
+        return dataList;
+    }
+
+
+    // 中华网
+    public static List<ParserResultEntity> parseChinaNetHtml(String html, String time, String siteName, String newsType) {
+        List<ParserResultEntity> dataList = new ArrayList<>();
+        Document htmlDoc = Jsoup.parse(html);
+        Element firstEleDiv = htmlDoc.getElementById("rank-defList");
+        Elements elements = firstEleDiv.getElementsByClass("wntjItem item_defaultView clearfix");
+        for (Element element : elements){
+            ParserResultEntity resultEntity = new ParserResultEntity();
+            String newTime = element.getElementsByClass("time").html();
+            if (StrUtil.isBlank(time) || DateUtil.parse(newTime).getTime() > DateUtil.parse(time).getTime()) {
+                resultEntity.setSiteName(siteName);
+                resultEntity.setNewsType(newsType);
+                resultEntity.setTime(DateUtil.format(DateUtil.parse(newTime),"yyyy-MM-dd HH:mm:ss"));
+                // 解析新闻地址和标题
+                Element aEle = element.getElementsByClass("tit").get(0).select("a").get(0);
+                String url = aEle.attr("href");
+                resultEntity.setNewsUrl(url);
+                // 解析新闻标题
+                String title = aEle.html();
+                resultEntity.setTitle(title);
+                dataList.add(resultEntity);
             }
         }
         return dataList;

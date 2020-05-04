@@ -21,8 +21,8 @@ public class NewsAnalysisService {
     @Autowired
     private NewsAnalysisMapper newsAnalysisMapper;
 
-    public Map getData() {
-        List<Map> dataList = newsAnalysisMapper.getDataList();
+    public Map getData(String siteName) {
+        List<Map> dataList = newsAnalysisMapper.getDataList(siteName);
         Map dataMap = new HashMap(2);
         List<String> typeList = new ArrayList<>();
         List<Integer> valueList = new ArrayList<>();
@@ -37,11 +37,10 @@ public class NewsAnalysisService {
         return dataMap;
     }
 
-    public Map getTodayTotal() {
-        String currentDay = DateUtil.getDate_yMd();
-        String startTime = currentDay + " 00:00:00";
-        String endTime = currentDay + " 23:59:59";
-        List<Map> dataList = newsAnalysisMapper.getTodayTotal(startTime, endTime);
+    public Map getTodayTotal(String siteName, String date) {
+        String startTime = date + " 00:00:00";
+        String endTime = date + " 23:59:59";
+        List<Map> dataList = newsAnalysisMapper.getTodayTotal(siteName, startTime, endTime);
         Map dataMap = new HashMap(2);
         List<String> typeList = new ArrayList<>();
         List<Integer> valueList = new ArrayList<>();
@@ -56,7 +55,7 @@ public class NewsAnalysisService {
         return dataMap;
     }
 
-    public Map getMonthTotal(String month) throws Exception {
+    public Map getMonthTotal(String siteName, String month) throws Exception {
         Map<String, Object> dataSetMap = new HashMap<>(2);
         List<String> typeList = new ArrayList<>();
         List<Map> dataValueList = new ArrayList<>();
@@ -68,7 +67,7 @@ public class NewsAnalysisService {
         String endDate = monthDayList.get(monthDayList.size() - 1);
         String startTime = startDate + " 00:00:00";
         String endTime = endDate + " 23:59:59";
-        List<Map<String, Object>> dataList = newsAnalysisMapper.getMonthTotal(startTime, endTime);
+        List<Map<String, Object>> dataList = newsAnalysisMapper.getMonthTotal(siteName, startTime, endTime);
         for (Map<String, Object> dataMap : dataList) {
             List<Integer> datasList = new ArrayList<>();
             Map valueMap = new HashMap(16);

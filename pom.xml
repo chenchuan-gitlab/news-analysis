@@ -218,10 +218,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--解析html-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.10.2</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>Trace_Source</finalName>
+        <finalName>news_analysis</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>

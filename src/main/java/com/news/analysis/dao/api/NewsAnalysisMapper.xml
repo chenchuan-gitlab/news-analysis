@@ -15,7 +15,8 @@
 	        ni.total AS total
         FROM
 	        website_config wc
-	        LEFT JOIN ( SELECT NEWS_TYPE AS type, COUNT( 1 ) AS total FROM news_info GROUP BY NEWS_TYPE ) ni ON wc.NEWS_TYPE = ni.type
+	        LEFT JOIN ( SELECT NEWS_TYPE AS type, COUNT( 1 ) AS total FROM news_info WHERE SITE_NAME=#{siteName} GROUP BY NEWS_TYPE ) ni ON wc.NEWS_TYPE = ni.type
+	        WHERE wc.WEBSITE=#{siteName}
     </select>
 
     <select id="getTodayTotal" resultType="java.util.Map">
@@ -25,30 +26,32 @@
         FROM
 	        website_config wc
 	        LEFT JOIN (
-	        SELECT NEWS_TYPE AS type, COUNT( 1 ) AS total FROM news_info WHERE TIME BETWEEN #{startTime} AND #{endTime} GROUP BY NEWS_TYPE ) ni
+	        SELECT NEWS_TYPE AS type, COUNT( 1 ) AS total FROM news_info WHERE TIME BETWEEN #{startTime} AND #{endTime} AND SITE_NAME=#{siteName} GROUP BY NEWS_TYPE ) ni
 	        ON wc.NEWS_TYPE = ni.type
-
+            WHERE wc.WEBSITE=#{siteName}
     </select>
     <select id="getMonthTotal" resultMap="BaseResultMap">
         SELECT
             wc.NEWS_TYPE AS type,
-            ni.time,
+            ni.dates AS time,
             ni.total AS total
         FROM
             website_config wc
             LEFT JOIN (
             SELECT
                 NEWS_TYPE AS type,
-                DATE_FORMAT( TIME, '%Y-%m-%d' ) AS time,
+                DATE_FORMAT( TIME, '%Y-%m-%d' ) AS dates,
                 COUNT( 1 ) AS total
             FROM
                 news_info
             WHERE
                 TIME BETWEEN #{startTime}
                 AND #{endTime}
+                AND SITE_NAME=#{siteName}
             GROUP BY
                 NEWS_TYPE,
-            time
+            dates
             ) ni ON wc.NEWS_TYPE = ni.type
+            WHERE wc.WEBSITE=#{siteName}
     </select>
 </mapper>

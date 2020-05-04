@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Repository
 public interface AnalysisMapper {
-    List<Map<String,String>> getUrlList();
+    List<Map<String,String>> getUrlList(@Param("siteName") String siteName);
 
     void saveData(@Param("list") List<ParserResultEntity> resultList);
 }

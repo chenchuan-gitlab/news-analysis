@@ -24,8 +24,10 @@
 	        ni.time
         FROM
 	        website_config wc
-	        LEFT JOIN ( SELECT SITE_NAME AS siteName, NEWS_TYPE AS newsType, DATE_FORMAT( MAX( TIME ), '%Y-%m-%d %H:%i:%s' ) AS time FROM news_info GROUP BY SITE_NAME, NEWS_TYPE ) ni ON wc.WEBSITE = ni.siteName
-	        AND wc.NEWS_TYPE = ni.newsType AND wc.`STATUS`=1
+	        LEFT JOIN ( SELECT SITE_NAME AS siteName, NEWS_TYPE AS newsType, DATE_FORMAT( MAX( TIME ), '%Y-%m-%d %H:%i:%s' ) AS time FROM news_info WHERE SITE_NAME=#{siteName} GROUP BY SITE_NAME, NEWS_TYPE ) ni ON wc.WEBSITE = ni.siteName
+	        AND wc.NEWS_TYPE = ni.newsType
+	        WHERE wc.`STATUS`=1
+	        AND wc.WEBSITE=#{siteName}
     </select>
 
 

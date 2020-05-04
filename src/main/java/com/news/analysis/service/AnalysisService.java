@@ -16,8 +16,8 @@ public class AnalysisService {
     @Autowired
     private AnalysisMapper analysisMapper;
 
-    public List<Map<String, String>> getUrlList() {
-        return analysisMapper.getUrlList();
+    public List<Map<String, String>> getUrlList(String siteName) {
+        return analysisMapper.getUrlList(siteName);
     }
 
     public void saveData(List<ParserResultEntity> resultList) {

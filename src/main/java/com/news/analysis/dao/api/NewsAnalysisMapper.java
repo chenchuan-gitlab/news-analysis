@@ -11,9 +11,9 @@ import java.util.Map;
  */
 @Repository
 public interface NewsAnalysisMapper {
-    List<Map> getDataList();
+    List<Map> getDataList(@Param("siteName") String siteName);
 
-    List<Map>  getTodayTotal(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<Map>  getTodayTotal(@Param("siteName") String siteName,@Param("startTime") String startTime, @Param("endTime") String endTime);
 
-    List<Map<String, Object>> getMonthTotal(@Param("startTime")String startTime, @Param("endTime")String endTime);
+    List<Map<String, Object>> getMonthTotal(@Param("siteName") String siteName,@Param("startTime")String startTime, @Param("endTime")String endTime);
 }

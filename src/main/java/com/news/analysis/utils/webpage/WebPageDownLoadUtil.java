@@ -37,7 +37,7 @@ public class WebPageDownLoadUtil {
     }
 
     public static void main(String[] args) throws Exception{
-        String s = getHtmlSource("https://news.youth.cn/gn/","gb2312");
+        String s = getHtmlSource("https://news.china.com/international/","utf-8");
         System.out.println(s);
     }
 
