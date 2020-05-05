@@ -58,7 +58,9 @@
             r.replyUserName,
             r.commentUserName,
             r.reply,
-            r.time
+            r.time,
+            r.statusCode,
+            r.status
         FROM
             COMMENT c,
             (
@@ -68,7 +70,9 @@
                 u1.USER_NAME AS replyUserName,
                 u2.USER_NAME AS commentUserName,
                 r.REPLY_CONTENT AS reply,
-                DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d %H:%i:%s' ) AS time
+                DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d %H:%i:%s' ) AS time,
+                r.STATUS AS statusCode,
+                ( CASE r.STATUS WHEN 0 THEN '禁用' ELSE '启用' END ) AS status
             FROM
                 reply r,
                 USER u1,
@@ -76,7 +80,6 @@
             WHERE
                 r.USER_ID = u1.ID
                 AND r.REPLY_TO = u2.ID
-                AND r.`STATUS` = 1
                 <if test="startTime != null and '' != startTime">
                     AND DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d' )>=#{startTime}
                 </if>

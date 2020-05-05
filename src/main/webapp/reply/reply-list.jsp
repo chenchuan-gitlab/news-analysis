@@ -52,6 +52,7 @@
                             <th>回复对象</th>
                             <th>评论内容</th>
                             <th>回复内容</th>
+                            <th>状态</th>
                             <th>回复时间</th>
                             <th>操作</th>
                         </thead>
@@ -93,7 +94,7 @@
         });
     });
 
-    /*用户-停用*/
+    /*回复-禁用*/
     function updateStatus(id, status) {
         layer.confirm('确认要更新状态吗？', function (index) {
             $.ajax({
@@ -156,8 +157,10 @@
                 object.rows[i].commentUserName + "</td><td>" +
                 object.rows[i].comment + "</td><td>" +
                 object.rows[i].reply + "</td><td>" +
+                object.rows[i].status + "</td><td>" +
                 object.rows[i].time + "</td>";
             html += "<td class='td-manage'>" +
+                "<a onclick='updateStatus(" + object.rows[i].id + "," + object.rows[i].statusCode + ")' href='javascript:;' title=" + title + "><i class='layui-icon' style='font-size: 23px'>&#xe669;</i></a>" +
                 "<a title='查看' onclick=xadmin.open('查看','./reply-view.jsp?id=" + object.rows[i].id + "',600,400) href='javascript:;'><i class='layui-icon' style='font-size: 23px'>&#xe633;</i></a></td></tr>";
         }
         if (html.length == 0) {

@@ -1,5 +1,6 @@
 package com.news.analysis.controller;
 
+import com.news.analysis.pojo.Reply;
 import com.news.analysis.service.ReplyService;
 import com.news.analysis.utils.PageForm;
 import com.news.analysis.utils.ResponseBuilder;
@@ -45,5 +46,20 @@ public class ReplyController {
             return ResponseBuilder.custom().faild();
         }
 
+    }
+
+    @RequestMapping(value = "/updateStatus.action")
+    @ResponseBody
+    public Object updateStatus(String id, int status) {
+        try {
+            Reply reply = new Reply();
+            status = status == 0 ? 1 : 0;
+            reply.setId(Long.valueOf(id));
+            reply.setStatus(status);
+            return ResponseBuilder.custom().success("success", replyService.update(reply));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBuilder.custom().faild();
+        }
     }
 }

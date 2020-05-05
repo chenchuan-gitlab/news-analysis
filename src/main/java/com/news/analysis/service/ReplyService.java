@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.news.analysis.dao.NewsInfoMapper;
 import com.news.analysis.dao.ReplyMapper;
+import com.news.analysis.pojo.Reply;
 import com.news.analysis.utils.PageForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,9 @@ public class ReplyService {
 
     public Object getDataByID(String id) {
         return replyMapper.selectByPrimaryKey(Long.valueOf(id));
+    }
+
+    public int update(Reply reply) {
+        return replyMapper.updateByPrimaryKeySelective(reply);
     }
 }

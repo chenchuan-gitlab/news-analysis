@@ -1,5 +1,6 @@
 package com.news.analysis.controller;
 
+import com.news.analysis.pojo.Comment;
 import com.news.analysis.service.CommentService;
 import com.news.analysis.utils.PageForm;
 import com.news.analysis.utils.ResponseBuilder;
@@ -16,7 +17,7 @@ import java.util.Map;
 @RequestMapping("/comment")
 public class CommentController {
     @Autowired
-    private CommentService CommentService;
+    private CommentService commentService;
 
     @RequestMapping(value = "/list.action", method = RequestMethod.GET)
     @ResponseBody
@@ -25,7 +26,7 @@ public class CommentController {
             Map<String, Object> paramsMap = new HashMap<>();
             paramsMap.put("startTime", startTime);
             paramsMap.put("endTime", endTime);
-            pageForm = CommentService.getList(pageForm, paramsMap);
+            pageForm = commentService.getList(pageForm, paramsMap);
             return ResponseBuilder.custom().success().data(pageForm);
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,11 +39,26 @@ public class CommentController {
     @ResponseBody
     public Object getDataByID(String id) {
         try {
-            return ResponseBuilder.custom().success().data(CommentService.getDataByID(id));
+            return ResponseBuilder.custom().success().data(commentService.getDataByID(id));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBuilder.custom().faild();
         }
 
+    }
+
+    @RequestMapping(value = "/updateStatus.action")
+    @ResponseBody
+    public Object updateStatus(String id, int status) {
+        try {
+            Comment comment = new Comment();
+            status = status == 0 ? 1 : 0;
+            comment.setId(Long.valueOf(id));
+            comment.setStatus(status);
+            return ResponseBuilder.custom().success("success", commentService.update(comment));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBuilder.custom().faild();
+        }
     }
 }
