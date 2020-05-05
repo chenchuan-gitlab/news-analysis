@@ -28,6 +28,14 @@
             DATE_FORMAT( TIME, '%Y-%m-%d %H:%i:%s' ) AS time
         FROM
             news_info
+            <where>
+              <if test="startTime != null and '' != startTime">
+                AND DATE_FORMAT( TIME, '%Y-%m-%d' )>=#{startTime}
+              </if>
+              <if test="endTime != null and '' != endTime">
+                <![CDATA[AND DATE_FORMAT( TIME, '%Y-%m-%d' )<=#{endTime}]]>
+              </if>
+            </where>
         ORDER BY
             time DESC
     </select>

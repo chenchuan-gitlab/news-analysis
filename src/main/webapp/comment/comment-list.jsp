@@ -34,7 +34,7 @@
                                id="startTime">
                     </div>
                     <div class="layui-inline layui-show-xs-block">
-                        <input class="layui-input" autocomplete="off" placeholder="结束时间" name="startTime"
+                        <input class="layui-input" autocomplete="off" placeholder="结束时间" name="endTime"
                                id="endTime">
                     </div>
                     <div class="layui-inline layui-show-xs-block">

@@ -63,6 +63,12 @@
             USER u
         WHERE
             c.USER_ID = u.ID
+          <if test="startTime != null and '' != startTime">
+              AND DATE_FORMAT( c.TIME, '%Y-%m-%d' )>=#{startTime}
+          </if>
+          <if test="endTime != null and '' != endTime">
+              <![CDATA[AND DATE_FORMAT( c.TIME, '%Y-%m-%d' )<=#{endTime}]]>
+          </if>
         ORDER BY
             time DESC
   </select>

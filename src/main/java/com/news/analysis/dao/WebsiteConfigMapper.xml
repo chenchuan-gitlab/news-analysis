@@ -28,10 +28,10 @@
         AND WEBSITE LIKE #{pattern}
       </if>
       <if test="startTime != null and '' != startTime">
-        AND TIME>=#{startTime}
+        AND DATE_FORMAT(TIME,'%Y-%m-%d')>=#{startTime}
       </if>
       <if test="endTime != null and '' != endTime">
-        <![CDATA[AND TIME<=#{endTime}]]>
+        <![CDATA[AND DATE_FORMAT(TIME,'%Y-%m-%d')<=#{endTime}]]>
       </if>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

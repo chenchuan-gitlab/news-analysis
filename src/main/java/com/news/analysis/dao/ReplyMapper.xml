@@ -77,6 +77,12 @@
                 r.USER_ID = u1.ID
                 AND r.REPLY_TO = u2.ID
                 AND r.`STATUS` = 1
+                <if test="startTime != null and '' != startTime">
+                    AND DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d' )>=#{startTime}
+                </if>
+                <if test="endTime != null and '' != endTime">
+                    <![CDATA[AND DATE_FORMAT( r.REPLAY_TIME, '%Y-%m-%d' )<=#{endTime}]]>
+                </if>
             ) r
         WHERE
             c.ID = r.commentId
